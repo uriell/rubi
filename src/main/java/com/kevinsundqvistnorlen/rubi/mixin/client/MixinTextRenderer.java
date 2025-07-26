@@ -46,7 +46,10 @@ public abstract class MixinTextRenderer {
     @Redirect(
         method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
                 "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V",
-        at = @At("HEAD")
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/font/TextRenderer"
+        )
     )
     public void redirectDraw(
         TextRenderer textRenderer,
