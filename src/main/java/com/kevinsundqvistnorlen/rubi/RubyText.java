@@ -12,9 +12,9 @@ public record RubyText(String text, String ruby, Style style) {
     public static final Pattern RUBY_PATTERN = Pattern.compile("\\^\\s*(.+?)\\s*\\(\\s*(.+?)\\s*\\)");
     public static final Pattern RUBY_PATTERN_FOR_STRIPPING = Pattern.compile("§" + RUBY_PATTERN.pattern());
 
-    public static final float RUBY_SCALE = 0.5f;
-    public static final float RUBY_OVERLAP = 0.1f;
-    public static final float TEXT_SCALE = 0.8f;
+    public static final float RUBY_SCALE = 0.75f;
+    public static final float RUBY_OVERLAP = 0.15f;
+    public static final float TEXT_SCALE = 1.2f;
 
     public static String strip(String returnValue) {
         StringBuilder sb = new StringBuilder(returnValue.length());
