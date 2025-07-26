@@ -45,13 +45,11 @@ public abstract class MixinTextRenderer {
     );
 
     @Redirect(
-        method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
-            "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I",
+        method = "draw",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/font/TextRenderer;drawInternal(Ljava/lang/String;FFIZLorg/joml/Matrix4f;" +
-                "Lnet/minecraft/client/render/VertexConsumerProvider;" +
-                "Lnet/minecraft/client/font/TextRenderer$TextLayerType;IIZ)I"
+            target = "Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
+                "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V"
         )
     )
     public int redirectDraw(
@@ -65,8 +63,7 @@ public abstract class MixinTextRenderer {
         VertexConsumerProvider vertexConsumers,
         TextRenderer.TextLayerType layerType,
         int backgroundColor,
-        int light,
-        boolean reverse
+        int light
     ) {
         return this.draw(
             visitor -> TextVisitFactory.visitFormatted(text, Style.EMPTY, visitor),
@@ -83,9 +80,8 @@ public abstract class MixinTextRenderer {
     }
 
     @Inject(
-        method = "draw(Lnet/minecraft/text/OrderedText;FFIZLorg/joml/Matrix4f;" +
-            "Lnet/minecraft/client/render/VertexConsumerProvider;" +
-            "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I",
+        method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
+            "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V",
         at = @At("HEAD"),
         cancellable = true
     )
