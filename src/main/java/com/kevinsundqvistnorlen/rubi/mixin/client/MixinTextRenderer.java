@@ -19,7 +19,7 @@ public abstract class MixinTextRenderer {
 
     @Shadow
     public abstract void draw(
-        final String text,
+        final OrderedText text,
         final float x,
         final float y,
         final int color,
@@ -75,7 +75,7 @@ public abstract class MixinTextRenderer {
         );
     }
 
-    @Inject(method = "draw", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V", at = @At("HEAD"), cancellable = true)
     public void onDraw(
         String text,
         float x,
