@@ -67,7 +67,7 @@ public abstract class MixinTextRenderer {
             y,
             color,
             shadow,
-            matrix,
+            new Matrix4f(matrix),
             vertexConsumers,
             layerType,
             backgroundColor,
@@ -93,6 +93,7 @@ public abstract class MixinTextRenderer {
         this.recursionGuard.set(true);
 
         try {
+            ci.cancel();
             TextDrawer.draw(
                 text,
                 x,
@@ -113,7 +114,6 @@ public abstract class MixinTextRenderer {
                     light
                 )
             );
-            ci.cancel();
         } finally {
             this.recursionGuard.set(false);
         }
