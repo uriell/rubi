@@ -75,9 +75,9 @@ public abstract class MixinTextRenderer {
         );
     }
 
-    @Inject(method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "draw(Lnet/minecraft/text/OrderedText;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V", at = @At("HEAD"), cancellable = true)
     public void onDraw(
-        String text,
+        OrderedText text,
         float x,
         float y,
         int color,
