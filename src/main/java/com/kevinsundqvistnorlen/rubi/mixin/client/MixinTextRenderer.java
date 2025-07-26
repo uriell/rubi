@@ -43,17 +43,13 @@ public abstract class MixinTextRenderer {
         int light
     );
 
-    @Redirect(
-        method = "draw",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/font/TextRenderer;" + 
-                "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
-                "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V"
-        )
+
+    @Inject(
+        method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V",
+        at = @At("HEAD"),
+        cancellable = true
     )
-    public void redirectDraw(
-        TextRenderer textRenderer,
+    public void onDrawString(
         String text,
         float x,
         float y,
@@ -63,7 +59,8 @@ public abstract class MixinTextRenderer {
         VertexConsumerProvider vertexConsumers,
         TextRenderer.TextLayerType layerType,
         int backgroundColor,
-        int light
+        int light,
+        CallbackInfo ci
     ) {
         this.draw(
             visitor -> TextVisitFactory.visitFormatted(text, Style.EMPTY, visitor),
@@ -77,10 +74,15 @@ public abstract class MixinTextRenderer {
             backgroundColor,
             light
         );
+        ci.cancel();
     }
 
-    @Inject(method = "draw(Lnet/minecraft/text/OrderedText;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V", at = @At("HEAD"), cancellable = true)
-    public void onDraw(
+    @Inject(
+        method = "draw(Lnet/minecraft/text/OrderedText;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    public void onDrawOrderedText(
         OrderedText text,
         float x,
         float y,
@@ -97,7 +99,6 @@ public abstract class MixinTextRenderer {
         this.recursionGuard.set(true);
 
         try {
-            ci.cancel();
             TextDrawer.draw(
                 text,
                 x,
@@ -118,6 +119,7 @@ public abstract class MixinTextRenderer {
                     light
                 )
             );
+            ci.cancel();
         } finally {
             this.recursionGuard.set(false);
         }
