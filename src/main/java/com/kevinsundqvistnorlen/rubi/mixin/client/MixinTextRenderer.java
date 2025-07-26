@@ -77,7 +77,7 @@ public abstract class MixinTextRenderer {
 
     @Inject(method = "draw", at = @At("HEAD"), cancellable = true)
     public void onDraw(
-        OrderedText text,
+        String text,
         float x,
         float y,
         int color,
