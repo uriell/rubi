@@ -44,13 +44,13 @@ public abstract class MixinTextRenderer {
     );
 
     @Redirect(
-        method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
+        method = "draw(Lnet/minecraft/text/OrderedText;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
                 "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V",
         at = @At("HEAD")
     )
     public void redirectDraw(
         TextRenderer textRenderer,
-        String text,
+        OrderedText text,
         float x,
         float y,
         int color,
