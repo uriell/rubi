@@ -19,7 +19,7 @@ public abstract class MixinTextRenderer {
 
     @Shadow
     public abstract void draw(
-        final OrderedText text,
+        final String text,
         final float x,
         final float y,
         final int color,
@@ -44,13 +44,13 @@ public abstract class MixinTextRenderer {
     );
 
     @Redirect(
-        method = "draw(Lnet/minecraft/text/OrderedText;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
+        method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
                 "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V",
         at = @At("HEAD")
     )
     public void redirectDraw(
         TextRenderer textRenderer,
-        OrderedText text,
+        String text,
         float x,
         float y,
         int color,
