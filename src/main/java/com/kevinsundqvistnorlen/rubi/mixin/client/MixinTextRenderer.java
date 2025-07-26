@@ -67,7 +67,7 @@ public abstract class MixinTextRenderer {
             y,
             color,
             shadow,
-            new Matrix4f(matrix),
+            matrix,
             vertexConsumers,
             layerType,
             backgroundColor,
