@@ -61,7 +61,7 @@ public abstract class MixinTextRenderer {
         int backgroundColor,
         int light
     ) {
-        return this.draw(
+        this.draw(
             visitor -> TextVisitFactory.visitFormatted(text, Style.EMPTY, visitor),
             x,
             y,
