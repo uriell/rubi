@@ -10,7 +10,6 @@ import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TextRenderer.class)
 public abstract class MixinTextRenderer {
@@ -20,16 +19,16 @@ public abstract class MixinTextRenderer {
 
     @Shadow
     public abstract void draw(
-        OrderedText text,
-        float x,
-        float y,
-        int color,
-        boolean shadow,
-        Matrix4f matrix,
-        VertexConsumerProvider vertexConsumers,
-        TextRenderer.TextLayerType layerType,
-        int backgroundColor,
-        int light
+        final OrderedText text,
+        final float x,
+        final float y,
+        final int color,
+        final boolean shadow,
+        final Matrix4f matrix,
+        final VertexConsumerProvider vertexConsumers,
+        final TextRenderer.TextLayerType layerType,
+        final int backgroundColor,
+        final int light
     );
 
     @Shadow
@@ -93,28 +92,27 @@ public abstract class MixinTextRenderer {
         TextRenderer.TextLayerType layerType,
         int backgroundColor,
         int light,
-        CallbackInfoReturnable<Integer> cir
+        CallbackInfo ci
     ) {
         if (this.recursionGuard.get()) return;
         this.recursionGuard.set(true);
 
         try {
-            x =
-                TextDrawer.draw(text, x, y, matrix, this.handler, this.fontHeight,
-                    (t, xx, yy, m) -> this.draw(
-                        t,
-                        Math.round(xx),
-                        Math.round(yy),
-                        color,
-                        shadow,
-                        m,
-                        vertexConsumers,
-                        layerType,
-                        backgroundColor,
-                        light
-                    )
-                );
-            cir.setReturnValue((int) Math.ceil(x) + (shadow ? 1 : 0));
+            TextDrawer.draw(text, x, y, matrix, this.handler, this.fontHeight,
+                (t, xx, yy, m) -> this.draw(
+                    t,
+                    Math.round(xx),
+                    Math.round(yy),
+                    color,
+                    shadow,
+                    m,
+                    vertexConsumers,
+                    layerType,
+                    backgroundColor,
+                    light
+                )
+            );
+            ci.cancel();
         } finally {
             this.recursionGuard.set(false);
         }
