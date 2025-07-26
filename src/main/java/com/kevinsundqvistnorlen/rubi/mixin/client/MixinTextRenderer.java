@@ -19,7 +19,7 @@ public abstract class MixinTextRenderer {
     @Final @Shadow private TextHandler handler;
 
     @Shadow
-    public abstract int draw(
+    public abstract void draw(
         OrderedText text,
         float x,
         float y,
@@ -49,7 +49,7 @@ public abstract class MixinTextRenderer {
                 "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V",
         at = @At("HEAD")
     )
-    public int redirectDraw(
+    public void redirectDraw(
         TextRenderer textRenderer,
         String text,
         float x,
