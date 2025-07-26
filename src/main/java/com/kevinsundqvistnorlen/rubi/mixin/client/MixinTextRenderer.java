@@ -75,12 +75,7 @@ public abstract class MixinTextRenderer {
         );
     }
 
-    @Inject(
-        method = "draw(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;" +
-            "Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)V",
-        at = @At("HEAD"),
-        cancellable = true
-    )
+    @Inject(method = "draw", at = @At("HEAD"), cancellable = true)
     public void onDraw(
         OrderedText text,
         float x,
@@ -98,7 +93,13 @@ public abstract class MixinTextRenderer {
         this.recursionGuard.set(true);
 
         try {
-            TextDrawer.draw(text, x, y, matrix, this.handler, this.fontHeight,
+            TextDrawer.draw(
+                text,
+                x,
+                y,
+                matrix,
+                this.handler,
+                this.fontHeight,
                 (t, xx, yy, m) -> this.draw(
                     t,
                     Math.round(xx),
